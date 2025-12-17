@@ -1,0 +1,54 @@
+# IDE & Editors
+.idea/
+cmake-build-*/
+*.iws
+*.iml
+*.ipr
+out/
+
+# VS Code
+.vscode/
+
+# Build Directories & Artifacts
+build/
+**/build/
+Bin/
+**/Bin/
+
+# CMake specific generation files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.ninja
+
+# Compiled Binaries & Objects
+*.elf
+*.bin
+*.hex
+*.map
+*.o
+*.obj
+*.a
+*.lib
+*.d
+*.lst
+*.su
+
+# STM32CubeMX Specific
+.mxproject
+
+.DS_Store
+Thumbs.db
+
+# -------------------
+# SAFEGUARD: Never ignore these
+# -------------------
+# Keep the configuration file!
+!*.ioc
+
+# Keep Linker Scripts
+!*.ld
+
+# Keep CMakeLists
+!CMakeLists.txt
