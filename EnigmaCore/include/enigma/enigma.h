@@ -5,6 +5,10 @@
 #include "reflector.h"
 #include "plugboard.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct
 {
     Plugboard plugboard;
@@ -19,5 +23,9 @@ void EnigmaSetPlugboard(EnigmaMachine* enigma, const Plugboard* plugboard);
 void EnigmaAddRotor(EnigmaMachine* enigma, const Rotor* rotor);
 char EnigmaEncryptChar(EnigmaMachine* enigma, char c);
 void EnigmaEncryptString(EnigmaMachine* enigma, char* buffer);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif //ENIGMACORE_ENIGMA_H

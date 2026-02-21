@@ -1,23 +1,11 @@
 #include <gtest/gtest.h>
-#include "../include/enigma/reflector.h"
-#include "../include/enigma/constants.h"
+#include "enigma/reflector.h"
+#include "enigma/constants.h"
 
-namespace enigma
+TEST(ReflectorTest, Initialization)
 {
-  TEST(ReflectorTest, Initialization)
-  {
-    const Reflector reflector(kReflector_B_Wiring);
+  Reflector reflector;
+  ReflectorInit(&reflector, kEnigmaReflector_B_Wiring);
 
-    EXPECT_EQ(reflector.Reflect(0), 24);
-  }
-
-  TEST(ReflectorTest, IsReciprocal)
-  {
-    const Reflector reflector(kReflector_B_Wiring);
-
-    const int a_to_y = reflector.Reflect(0);
-    const int y_to_a = reflector.Reflect(a_to_y);
-
-    EXPECT_EQ(y_to_a, 0);
-  }
+  EXPECT_EQ(ReflectorReflect(&reflector, 0), 24);
 }

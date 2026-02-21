@@ -5,6 +5,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct
 {
     uint8_t forward_wiring[ALPHABET_SIZE];
@@ -21,5 +25,9 @@ void RotorStep(Rotor* rotor);
 bool RotorIsOnNotch(const Rotor* rotor);
 int RotorForward(const Rotor* rotor, int input_index);
 int RotorBackward(const Rotor* rotor, int input_index);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif //ENIGMACORE_ROTOR_H

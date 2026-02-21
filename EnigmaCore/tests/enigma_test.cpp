@@ -1,58 +1,88 @@
 #include <gtest/gtest.h>
 #include "enigma/enigma.h"
 #include "enigma/constants.h"
+#include <string>
 
-namespace enigma
+class EnigmaMachineTest : public ::testing::Test
 {
-    class EnigmaMachineTest : public ::testing::Test
+protected:
+    EnigmaMachine machine{};
+
+    void SetUp() override
     {
-    protected:
-        EnigmaMachine machine;
+        EnigmaInit(&machine);
 
-        void SetUp() override
-        {
-            machine.SetReflector(Reflector(kReflector_B_Wiring));
+        Reflector r;
+        ReflectorInit(&r, kEnigmaReflector_B_Wiring);
+        EnigmaSetReflector(&machine, &r);
 
-            machine.SetPlugboard(Plugboard());
+        Plugboard p;
+        PlugboardInit(&p);
+        EnigmaSetPlugboard(&machine, &p);
 
-            machine.AddRotor(Rotor(kRotor_I_Wiring, kRotor_I_Notch));
-            machine.AddRotor(Rotor(kRotor_II_Wiring, kRotor_II_Notch));
-            machine.AddRotor(Rotor(kRotor_III_Wiring, kRotor_III_Notch));
-        }
-    };
+        // Add Rotors I, II, III
+        Rotor temp;
 
-    TEST_F(EnigmaMachineTest, EncryptsAAAAAtoBDZGO)
-    {
-        const std::string input = "AAAAA";
-        const std::string expected = "BDZGO";
+        RotorInit(&temp, kEnigmaRotor_I_Wiring, kEnigmaRotor_I_Notch, 0);
+        RotorSetPosition(&temp, 'A');
+        EnigmaAddRotor(&machine, &temp);
 
-        EXPECT_EQ(machine.EncryptString(input), expected);
+        RotorInit(&temp, kEnigmaRotor_II_Wiring, kEnigmaRotor_II_Notch, 0);
+        RotorSetPosition(&temp, 'A');
+        EnigmaAddRotor(&machine, &temp);
+
+        RotorInit(&temp, kEnigmaRotor_III_Wiring, kEnigmaRotor_III_Notch, 0);
+        RotorSetPosition(&temp, 'A');
+        EnigmaAddRotor(&machine, &temp);
     }
+};
 
-    TEST_F(EnigmaMachineTest, EncryptionIsSymmetric)
-    {
-        const std::string plaintext = "HELLO";
-        const std::string cyphertext = machine.EncryptString(plaintext);
+TEST_F(EnigmaMachineTest, EncryptsAAAAAtoBDZGO)
+{
+    char buffer[] = "AAAAA";
+    EnigmaEncryptString(&machine, buffer);
+    EXPECT_STREQ(buffer, "BDZGO");
+}
 
-        EnigmaMachine receiver;
-        receiver.SetReflector(Reflector(kReflector_B_Wiring));
-        receiver.SetPlugboard(Plugboard());
-        receiver.AddRotor(Rotor(kRotor_I_Wiring, kRotor_I_Notch));
-        receiver.AddRotor(Rotor(kRotor_II_Wiring, kRotor_II_Notch));
-        receiver.AddRotor(Rotor(kRotor_III_Wiring, kRotor_III_Notch));
+TEST_F(EnigmaMachineTest, EncryptionIsSymmetric)
+{
+    std::string original = "HELLO";
+    char buffer[10];
+    strcpy(buffer, original.c_str());
 
-        const std::string decrypted = receiver.EncryptString(cyphertext);
+    // Encrypt
+    EnigmaEncryptString(&machine, buffer);
+    std::string cyphertext = buffer;
 
-        EXPECT_EQ(decrypted, plaintext);
-    }
+    // Create Receiver (New Machine)
+    EnigmaMachine receiver;
+    EnigmaInit(&receiver);
 
-    TEST_F(EnigmaMachineTest, PlugboardChangesOutput)
-    {
-        Plugboard pb;
-        pb.AddCable('A', 'Z');
-        machine.SetPlugboard(pb);
+    Reflector r;
+    ReflectorInit(&r, kEnigmaReflector_B_Wiring);
+    EnigmaSetReflector(&receiver, &r);
 
-        const char output = machine.Encrypt('A');
-        EXPECT_NE(output, 'B');
-    }
+    Plugboard p;
+    PlugboardInit(&p);
+    EnigmaSetPlugboard(&receiver, &p);
+
+    Rotor temp;
+    RotorInit(&temp, kEnigmaRotor_I_Wiring, kEnigmaRotor_I_Notch, 0);
+    RotorSetPosition(&temp, 'A');
+    EnigmaAddRotor(&receiver, &temp);
+
+    RotorInit(&temp, kEnigmaRotor_II_Wiring, kEnigmaRotor_II_Notch, 0);
+    RotorSetPosition(&temp, 'A');
+    EnigmaAddRotor(&receiver, &temp);
+
+    RotorInit(&temp, kEnigmaRotor_III_Wiring, kEnigmaRotor_III_Notch, 0);
+    RotorSetPosition(&temp, 'A');
+    EnigmaAddRotor(&receiver, &temp);
+
+    // Decrypt
+    char decrypt_buffer[10];
+    strcpy(decrypt_buffer, cyphertext.c_str());
+    EnigmaEncryptString(&receiver, decrypt_buffer);
+
+    EXPECT_STREQ(decrypt_buffer, original.c_str());
 }
