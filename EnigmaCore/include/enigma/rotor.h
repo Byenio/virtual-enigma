@@ -1,34 +1,25 @@
 #ifndef ENIGMACORE_ROTOR_H
 #define ENIGMACORE_ROTOR_H
 
-#include <array>
-#include <string>
-#include <string_view>
+#include "helpers.h"
+#include <stdint.h>
+#include <stdbool.h>
 
-namespace enigma
+typedef struct
 {
-  class Rotor
-  {
-  public:
-    Rotor(std::string_view wiring, char notch, int ring_setting = 0);
+    uint8_t forward_wiring[ALPHABET_SIZE];
+    uint8_t backward_wiring[ALPHABET_SIZE];
+    uint8_t notch_index;
+    uint8_t position;
+    uint8_t ring_setting;
+} Rotor;
 
-    void SetPosition(char position);
-    [[nodiscard]] char GetPosition() const;
-
-    void Step();
-    [[nodiscard]] bool IsOnNotch() const;
-
-    [[nodiscard]] int Forward(int input_index) const;
-    [[nodiscard]] int Backward(int input_index) const;
-
-  private:
-    std::array<int, 26> forward_wiring_ {};
-    std::array<int, 26> backward_wiring_ {};
-
-    int position_;
-    int ring_setting_;
-    int notch_index_;
-  };
-}
+void RotorInit(Rotor* rotor, const char* wiring, char notch, int ring_setting);
+void RotorSetPosition(Rotor* rotor, char position);
+char RotorGetPosition(const Rotor* rotor);
+void RotorStep(Rotor* rotor);
+bool RotorIsOnNotch(const Rotor* rotor);
+int RotorForward(const Rotor* rotor, int input_index);
+int RotorBackward(const Rotor* rotor, int input_index);
 
 #endif //ENIGMACORE_ROTOR_H

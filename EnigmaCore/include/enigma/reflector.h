@@ -1,23 +1,15 @@
 #ifndef ENIGMACORE_REFLECTOR_H
 #define ENIGMACORE_REFLECTOR_H
 
-#include <array>
-#include <string_view>
+#include "helpers.h"
+#include <stdint.h>
 
-namespace enigma
+typedef struct
 {
-  class Reflector
-  {
-  public:
-    Reflector() = default;
+    uint8_t wiring[ALPHABET_SIZE];
+} Reflector;
 
-    explicit Reflector(std::string_view wiring);
-
-    int Reflect(int input_index) const;
-
-  private:
-    std::array<int, 26> wiring_ {};
-  };
-}
+void ReflectorInit(Reflector* reflector, const char* wiring_str);
+int ReflectorReflect(const Reflector* reflector, int input_index);
 
 #endif //ENIGMACORE_REFLECTOR_H

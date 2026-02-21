@@ -1,25 +1,16 @@
 #ifndef ENIGMACORE_PLUGBOARD_H
 #define ENIGMACORE_PLUGBOARD_H
 
-#include <array>
-#include <vector>
-#include <utility>
+#include "helpers.h"
+#include <stdint.h>
 
-namespace enigma
+typedef struct
 {
-  class Plugboard
-  {
-  public:
-    Plugboard();
+    uint8_t wiring[ALPHABET_SIZE];
+} Plugboard;
 
-    void AddCable(char a, char b);
-    void Reset();
-
-    int Forward(int input_index) const;
-
-  private:
-    std::array<int, 26> wiring_ {};
-  };
-}
+void PlugboardInit(Plugboard* plugboard);
+void PlugboardAddCable(Plugboard* plugboard, char a, char b);
+int PlugboardForward(const Plugboard* plugboard, int input_index);
 
 #endif //ENIGMACORE_PLUGBOARD_H

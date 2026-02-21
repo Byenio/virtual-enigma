@@ -36,12 +36,13 @@ enable_language(C ASM)
 
 # Create an executable object type
 add_executable(${CMAKE_PROJECT_NAME}
-        ../EnigmaCore/src/enigma.cpp
-        ../EnigmaCore/src/plugboard.cpp
-        ../EnigmaCore/src/reflector.cpp
-        ../EnigmaCore/src/rotor.cpp
         Core/Inc/enigma_core_task.h
         Core/Src/enigma_core_task.cpp
+        ../EnigmaCore/src/rotor.c
+        ../EnigmaCore/src/plugboard.c
+        ../EnigmaCore/src/reflector.c
+        ../EnigmaCore/src/enigma.c
+        ../EnigmaCore/src/constants.c
 )
 
 # Add STM32CubeMX generated sources
