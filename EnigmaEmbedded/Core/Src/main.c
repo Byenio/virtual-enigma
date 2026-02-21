@@ -287,11 +287,11 @@ static void MX_GPIO_Init(void)
 void StartEnigmaCoreTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
-  enigma_setup();
+  EnigmaSetup();
   /* Infinite loop */
   for(;;)
   {
-    enigma_task(argument);
+    EnigmaTask(argument);
     osDelay(1000);
   }
   /* USER CODE END 5 */

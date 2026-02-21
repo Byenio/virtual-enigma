@@ -37,7 +37,7 @@ enable_language(C ASM)
 # Create an executable object type
 add_executable(${CMAKE_PROJECT_NAME}
         Core/Inc/enigma_core_task.h
-        Core/Src/enigma_core_task.cpp
+        Core/Src/enigma_core_task.c
         ../EnigmaCore/src/rotor.c
         ../EnigmaCore/src/plugboard.c
         ../EnigmaCore/src/reflector.c
