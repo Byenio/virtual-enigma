@@ -25,9 +25,16 @@ char RotorGetPosition(const Rotor* rotor)
     return rotor->position + 'A';
 }
 
-void RotorStep(Rotor* rotor)
+void RotorStep(Rotor* rotor, const int8_t direction)
 {
-    rotor->position = (rotor->position + 1) % ALPHABET_SIZE;
+    if (direction == 1)
+    {
+        rotor->position = (rotor->position + 1) % ALPHABET_SIZE;
+    }
+    else if (direction == -1)
+    {
+        rotor->position = (rotor->position - 1 + ALPHABET_SIZE) % ALPHABET_SIZE;
+    }
 }
 
 bool RotorIsOnNotch(const Rotor* rotor)

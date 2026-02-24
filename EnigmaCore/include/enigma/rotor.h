@@ -21,7 +21,7 @@ typedef struct
 void RotorInit(Rotor* rotor, const char* wiring, char notch, int ring_setting);
 void RotorSetPosition(Rotor* rotor, char position);
 char RotorGetPosition(const Rotor* rotor);
-void RotorStep(Rotor* rotor);
+void RotorStep(Rotor* rotor, int8_t direction);
 bool RotorIsOnNotch(const Rotor* rotor);
 int RotorForward(const Rotor* rotor, int input_index);
 int RotorBackward(const Rotor* rotor, int input_index);

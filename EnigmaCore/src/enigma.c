@@ -49,7 +49,7 @@ static void StepRotors(EnigmaMachine* enigma)
 
     for (int i = 0; i < count; i++) {
         if (should_step[i]) {
-            RotorStep(&enigma->rotors[i]);
+            RotorStep(&enigma->rotors[i], 1);
         }
     }
 }
