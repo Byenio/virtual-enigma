@@ -33,7 +33,7 @@ graph TD
         Nextion[Nextion Display] <-->|UART| STM32[STM32L476RG]
     end
 
-    subgraph Firmware [STM32 Firmware (FreeRTOS)]
+    subgraph Firmware ["STM32 Firmware (FreeRTOS)"]
         ISR[UART ISR]
         Queue[osMessageQueue]
         Task[Enigma Core Task]
