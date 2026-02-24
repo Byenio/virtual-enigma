@@ -1,0 +1,7 @@
+#ifndef ENIGMAEMBEDDED_ENIGMA_CORE_TASK_H
+#define ENIGMAEMBEDDED_ENIGMA_CORE_TASK_H
+
+void EnigmaSetup();
+void EnigmaTask(void *arg);
+
+#endif //ENIGMAEMBEDDED_ENIGMA_CORE_TASK_H

@@ -1,26 +1,28 @@
 #ifndef ENIGMACORE_CONSTANTS_H
 #define ENIGMACORE_CONSTANTS_H
 
-#include <array>
-#include <string_view>
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-namespace enigma
-{
-  constexpr std::string_view kRotor_I_Wiring   = "EKMFLGDQVZNTOWYHXUSPAIBRCJ";
-  constexpr std::string_view kRotor_II_Wiring  = "AJDKSIRUXBLHWTMCQGZNPYFVOE";
-  constexpr std::string_view kRotor_III_Wiring = "BDFHJLCPRTXVZNYEIWGAKMUSQO";
-  constexpr std::string_view kRotor_IV_Wiring  = "ESOVPZJAYQUIRHXLNFTGKDCMWB";
-  constexpr std::string_view kRotor_V_Wiring   = "VZBRGITYUPSDNHLXAWMJQOFECK";
+extern const char kEnigmaRotor_I_Wiring[];
+extern const char kEnigmaRotor_II_Wiring[];
+extern const char kEnigmaRotor_III_Wiring[];
+extern const char kEnigmaRotor_IV_Wiring[];
+extern const char kEnigmaRotor_V_Wiring[];
 
-  constexpr char kRotor_I_Notch    = 'Q';
-  constexpr char kRotor_II_Notch   = 'E';
-  constexpr char kRotor_III_Notch  = 'V';
-  constexpr char kRotor_IV_Notch   = 'J';
-  constexpr char kRotor_V_Notch    = 'Z';
+#define kEnigmaRotor_I_Notch 'Q'
+#define kEnigmaRotor_II_Notch 'E'
+#define kEnigmaRotor_III_Notch 'V'
+#define kEnigmaRotor_IV_Notch 'J'
+#define kEnigmaRotor_V_Notch 'Z'
 
-  constexpr std::string_view kReflector_A_Wiring = "EJMZALYXVBWFCRQUONTSPIKHGD";
-  constexpr std::string_view kReflector_B_Wiring = "YRUHQSLDPXNGOKMIEBFZCWVJAT";
-  constexpr std::string_view kReflector_C_Wiring = "FVPJIAOYEDRZXWGCTKUQSBNMHL";
+extern const char kEnigmaReflector_A_Wiring[];
+extern const char kEnigmaReflector_B_Wiring[];
+extern const char kEnigmaReflector_C_Wiring[];
+
+#ifdef __cplusplus
 }
+#endif
 
 #endif //ENIGMACORE_CONSTANTS_H
