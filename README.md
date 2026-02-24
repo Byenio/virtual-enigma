@@ -23,16 +23,27 @@ This repository is structured to demonstrate **separation of concerns** and **te
 |:------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------|
 | **`EnigmaCore/`**       | Platform-agnostic C99 library. Implements the mathematical model of Rotors, Reflectors, and the Plugboard. Contains no hardware dependencies. |
 | **`EnigmaEmbedded/`**   | Hardware Abstraction Layer (HAL) for STM32L476RG. Handles GPIO, UART, and System Clock configuration using STM32CubeMX.                       |
-| **`EnigmaDisplay/`**    | Interface layer for visualization and user interaction on Nextion display.                                                                    |
+| **`EnigmaDisplay/`**    | Contains Nextion Editor project files (.HMI) and resources for the GUI implementation.                                                        |
 | **`EnigmaCore/tests/`** | Unit test suite using GoogleTest to verify cryptographic accuracy against known Enigma vectors.                                               |
 
 ### System Diagram
 ```mermaid
 graph TD
-    User[User Input] -->|UART/GPIO| HAL[STM32 HAL]
-    HAL -->|Hardware Layer| App[EnigmaEmbedded]
-    App -->|Pure C Library| Core[EnigmaCore]
-    
+    subgraph Hardware
+        Nextion[Nextion Display] <-->|UART| STM32[STM32L476RG]
+    end
+
+    subgraph Firmware [STM32 Firmware (FreeRTOS)]
+        ISR[UART ISR]
+        Queue[osMessageQueue]
+        Task[Enigma Core Task]
+        
+        ISR -->|Put Data| Queue
+        Queue -->|Get Data| Task
+        Task -->|Process| Core[EnigmaCore Logic]
+        Task -->|Update| Nextion
+    end
+
     subgraph "Verification Environment"
     Test[GoogleTest] -->|Links| Core
     end
@@ -44,7 +55,13 @@ graph TD
 *   **Hardware:** STM32L476RG (Nucleo-64), Nextion NX4827T043_011
 *   **Build System:** CMake
 *   **Testing Framework:** GoogleTest (GTest)
+*   **Real-Time OS:** FreeRTOS (CMSIS-RTOS V2)
 *   **Tools:** STM32CubeMX, GCC ARM Embedded Toolchain, Nextion Editor
+
+### Firmware Architecture
+The firmware utilizes **FreeRTOS** to decouple hardware interrupts from business logic.
+*   **Input Handling:** UART interrupts (ISR) capture data from the Nextion display and immediately push it to a thread-safe `osMessageQueue`.
+*   **Core Task:** A single FreeRTOS task (`EnigmaTask`) blocks waiting for data from the queue. When a message arrives, it wakes up, processes the Enigma logic, and updates the display state.
 
 ---
 
